@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kisses for Carl</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .clickImage {
+            position: absolute;
+            width: 100px; /* Ukuran gambar */
+            height: 100px;
+            transform: translate(-50%, -50%);
+            pointer-events: none; /* Agar gambar tidak menghalangi klik lainnya */
+            opacity: 1;
+            transition: opacity 1s ease-out; /* Animasi fade */
+        }
+
+        #centerText {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-family: Arial, sans-serif;
+            color: black;
+            pointer-events: none; /* Agar teks tidak menghalangi klik gambar */
+            z-index: 1; /* Pastikan teks ada di atas background tapi di bawah gambar */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Teks di tengah halaman -->
+    <div id="centerText">This is for you, Carl</div>
+
+    <script>
+        let isDragging = false; // Untuk melacak apakah mouse sedang ditahan
+
+        // Fungsi untuk membuat gambar di posisi kursor
+        function createImageAtCursor(event) {
+            const newImage = document.createElement('img');
+            newImage.src = 'kisses-emoji.gif'; // Ganti dengan URL gambar yang diinginkan
+            newImage.classList.add('clickImage');
+
+            // Menentukan posisi gambar sesuai dengan kursor
+            newImage.style.left = `${event.pageX}px`;
+            newImage.style.top = `${event.pageY}px`;
+
+            // Menambahkan gambar ke dalam body
+            document.body.appendChild(newImage);
+
+            // Menghilangkan gambar setelah 1 detik
+            setTimeout(() => {
+                newImage.style.opacity = '0';
+            }, 1000);
+
+            // Menghapus gambar sepenuhnya dari DOM setelah 2 detik
+            setTimeout(() => {
+                newImage.remove();
+            }, 2000);
+        }
+
+        // Event listener untuk mulai drag (klik mouse)
+        document.addEventListener('mousedown', function (event) {
+            isDragging = true;
+            createImageAtCursor(event); // Buat gambar saat mulai klik
+        });
+
+        // Event listener untuk berhenti drag (lepas klik mouse)
+        document.addEventListener('mouseup', function () {
+            isDragging = false;
+        });
+
+        // Event listener untuk membuat gambar saat mouse bergerak (seret)
+        document.addEventListener('mousemove', function (event) {
+            if (isDragging) {
+                createImageAtCursor(event);
+            }
+        });
+    </script>
+
+</body>
+</html>
